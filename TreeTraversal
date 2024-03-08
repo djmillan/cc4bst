@@ -1,0 +1,135 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class TreeTraversal {
+
+    static class Node {
+        String data;
+        Node left, right;
+
+        Node(String data) {
+            this.data = data;
+            left = right = null;
+        }
+    }
+
+    // function
+    static Node insert(Node node, String data) {
+        if (node == null) {
+            return new Node(data);
+        }
+
+        if (data.compareTo(node.data) < 0) {
+            node.left = insert(node.left, data);
+        } else if (data.compareTo(node.data) > 0) {
+            node.right = insert(node.right, data);
+        } else {
+            return node; 
+        }
+        return node;
+    }
+
+    // preorder traversal
+    static ArrayList<String> preorder(Node root) {
+        ArrayList<String> result = new ArrayList<>();
+        preorderHelper(root, result);
+        return result;
+    }
+
+    static void preorderHelper(Node root, ArrayList<String> result) {
+        if (root == null) {
+            return;
+        }
+        result.add(root.data);
+        preorderHelper(root.left, result);
+        preorderHelper(root.right, result);
+    }
+
+    // inorder traversal
+    static ArrayList<String> inorder(Node root) {
+        ArrayList<String> result = new ArrayList<>();
+        inorderHelper(root, result);
+        return result;
+    }
+
+    static void inorderHelper(Node root, ArrayList<String> result) {
+        if (root == null) {
+            return;
+        }
+        inorderHelper(root.left, result);
+        result.add(root.data);
+        inorderHelper(root.right, result);
+    }
+
+    // postorder traversal
+    static ArrayList<String> postorder(Node root) {
+        ArrayList<String> result = new ArrayList<>();
+        postorderHelper(root, result);
+        return result;
+    }
+
+    static void postorderHelper(Node root, ArrayList<String> result) {
+        if (root == null) {
+            return;
+        }
+        postorderHelper(root.left, result);
+        postorderHelper(root.right, result);
+        result.add(root.data);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            // array size
+            System.out.println("Enter the size of the array: ");
+            int arrSize = sc.nextInt();
+
+            // get elements from the user
+            String[] arr = new String[arrSize];
+            System.out.println("Enter the elements of the array: ");
+            for (int i = 0; i < arrSize; i++) {
+                arr[i] = sc.next();
+            }
+
+            // root node for the bst
+            Node root = null;
+            for (int i = 0; i < arrSize; i++) {
+                root = insert(root, arr[i]);
+            }
+
+            // 1d representation
+            System.out.println("\n1-D Array Representation:");
+            System.out.print("[");
+            for (int i = 0; i < arrSize - 1; i++) {
+                System.out.print(arr[i] + ", ");
+            }
+            if (arrSize > 0) {
+                System.out.print(arr[arrSize - 1]);
+            }
+            System.out.println(", 0]");
+
+            // tree traversals
+            System.out.println("Preorder Traversal: ");
+            ArrayList<String> preorderResult = preorder(root);
+            System.out.println(preorderResult);
+
+            System.out.println("Inorder Traversal: ");
+            ArrayList<String> inorderResult = inorder(root);
+            System.out.println(inorderResult);
+
+            System.out.println("Postorder Traversal: ");
+            ArrayList<String> postorderResult = postorder(root);
+            System.out.println(postorderResult);
+
+            // try again option
+            System.out.println("\nDo you want to try again? (yes/no)");
+            String choice = sc.next();
+            if (!choice.equalsIgnoreCase("yes")) {
+                break;
+            }
+        }
+
+        sc.close();
+    }
+}
